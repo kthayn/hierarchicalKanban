@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>hierarchicalKanban</title>
+
+    <script type="text/javascript" src="/apps/2.0/sdk.js"></script>
+
+    <script type="text/javascript">
+        Rally.onReady(function () {
+                Ext.define('CustomApp', {
+    extend: 'Rally.app.App',
+    launch: function() {
+        this.projectCombobox = this.add({
+        	xtype: 'rallyprojectpicker',
+        	listener: {
+        		ready: this._onProjectComboboxLoad,
+        		scope: this
+        	}
+        });
+    },
+    _onProjectComboboxLoad: function() {
+		var cardBoardConfig = {
+			xtype: 'rallycardboard',
+			types: ['User Story', 'PortfolioItem/SubFeature', 'PortfolioItem/Feature'],
+			attribute: 'xArtifactState',
+			context: this.getContext(),
+			enableRanking: true,
+			cardConfig: {
+				editable: true,
+                showIconsAndHighlightBorder: true,
+                showReadyIcon: true,
+                showBlockedIcon: true,
+                showColorIcon: true,
+                showPlusIcon: true,
+                showGearIcon: true
+			},
+			storeConfig: {
+				filters: [this.projectCombobox.getQueryFromSelected()]
+			}
+		};
+		this.cardBoard = this.add(cardBoardConfig);
+    }
+});
+
+            Rally.launchApp('CustomApp', {
+                name:"hierarchicalKanban",
+	            parentRepos:""
+            });
+
+        });
+    </script>
+
+
+
+    <style type="text/css">
+        .app {
+  /* Add app styles here */
+}
+
+    </style>
+</head>
+<body>
+</body>
+</html>
